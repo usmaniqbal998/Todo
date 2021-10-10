@@ -1,4 +1,5 @@
 import { createGlobalStyle } from "styled-components";
+
 export default createGlobalStyle`
 *,*::after,*::before{
        margin: 0;
@@ -13,5 +14,6 @@ html{
 body{
 font-family: 'Josefin Sans', sans-serif;
 font-size:1.4rem;
+background-color: ${(props) => props.theme.bodyBackgroundColor};
 }
 `;

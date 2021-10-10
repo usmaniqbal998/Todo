@@ -2,17 +2,15 @@ import React, { useState } from "react";
 import useThemeSwitch from "./hooks/useThemeSwitch";
 import { lightTheme, darkTheme } from "./styles/themes";
 import styled, { ThemeProvider } from "styled-components";
+import GlobalStyles from "./styles/globalstyles";
 
 function App() {
   const [activeMode, onModeChanged] = useThemeSwitch();
 
   return (
     <ThemeProvider theme={activeMode === "Light" ? lightTheme : darkTheme}>
-      <div className="App">
-        <Text onClick={() => onModeChanged()}>
-          Click Me to test dark mode theme switch{" "}
-        </Text>
-      </div>
+      <GlobalStyles />
+      <div className="App"></div>
     </ThemeProvider>
   );
 }
