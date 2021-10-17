@@ -15,5 +15,6 @@ body{
 font-family: 'Josefin Sans', sans-serif;
 font-size:1.4rem;
 background-color: ${(props) => props.theme.bodyBackgroundColor};
+transition:  background-color 0.3s ease-in;
 }
 `;
