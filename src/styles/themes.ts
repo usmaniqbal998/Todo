@@ -7,6 +7,8 @@ export const lightTheme: DefaultTheme = {
   componentBackgroundColor: "#fff",
   textColor: "#494C6B",
   componentsBoxShadow: "0rem 3.5rem 5rem -1.5rem rgba(194, 195, 214, 0.5)",
+  borderColor: "#E3E4F1",
+  completedText: "#D1D2DA",
 };
 
 export const darkTheme: DefaultTheme = {
@@ -16,4 +18,6 @@ export const darkTheme: DefaultTheme = {
   componentBackgroundColor: "#25273D",
   textColor: "#C8CBE7",
   componentsBoxShadow: "0px 3.5rem 5rem -1.5rem rgba(0, 0, 0, 0.5)",
+  borderColor: "#393A4B",
+  completedText: "#4D5067",
 };

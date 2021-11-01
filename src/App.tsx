@@ -4,19 +4,22 @@ import { lightTheme, darkTheme } from "./styles/themes";
 import styled, { ThemeProvider } from "styled-components";
 import GlobalStyles from "./styles/globalstyles";
 import LightBG from "./images/bg-desktop-light.png";
-import DarkBG from "./images/bg-desktop-dark.png";
 import ThemeSwitch from "./components/ThemeSwitch";
 import TaskInput from "./components/TaskInput";
+import TasksCollection from "./components/TasksCollection";
+import TasksReducer from "./reducers/taskreducer";
 
 function App() {
   const [activeMode, switchTheme] = useThemeSwitch();
+  const [tasks, dispatch] = React.useReducer(TasksReducer, []);
 
   return (
     <ThemeProvider theme={activeMode === "Light" ? lightTheme : darkTheme}>
       <GlobalStyles />
       <Main>
         <ThemeSwitch mode={activeMode} switchThemeCallback={switchTheme} />
-        <TaskInput />
+        <TaskInput actionDispatcher={dispatch} />
+        <TasksCollection tasks={tasks} />
       </Main>
       <TopBanner />
     </ThemeProvider>

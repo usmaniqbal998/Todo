@@ -1,13 +1,38 @@
 import * as React from "react";
 import styled from "styled-components";
+import { Action, ACTIONS } from "../reducers/taskreducer";
+import { v4 as uid } from "uuid";
+import { STATUS } from "../types";
 
-interface ITaskInputProps {}
+interface ITaskInputProps {
+  actionDispatcher: React.Dispatch<Action>;
+}
 
-const TaskInput: React.FunctionComponent<ITaskInputProps> = () => {
+const TaskInput: React.FunctionComponent<ITaskInputProps> = ({
+  actionDispatcher,
+}) => {
+  const [taskInput, setTaskInput] = React.useState("");
+
+  const onTaskCreated = (e: React.KeyboardEvent<HTMLInputElement>): void => {
+    if (e.key === "Enter" && taskInput !== "") {
+      //task creation event here
+      actionDispatcher({
+        type: ACTIONS.ADD,
+        payload: { taskId: uid(), title: taskInput, status: STATUS.Active },
+      });
+      //cleanup here
+      setTaskInput("");
+    }
+  };
   return (
     <Container>
       <Oval />
-      <Input placeholder="Create a new todo.." />
+      <Input
+        value={taskInput}
+        onChange={(e) => setTaskInput(e.target.value)}
+        placeholder="Create a new todo.."
+        onKeyDown={onTaskCreated}
+      />
     </Container>
   );
 };
