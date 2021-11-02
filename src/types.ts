@@ -1,7 +1,4 @@
-export enum STATUS {
-  Completed = "COMPLETED",
-  Active = "ACTIVE",
-}
+export type STATUS = "ACTIVE" | "COMPLETED";
 
 export interface task {
   taskId: string;

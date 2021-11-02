@@ -2,7 +2,6 @@ import * as React from "react";
 import styled from "styled-components";
 import { Action, ACTIONS } from "../reducers/taskreducer";
 import { v4 as uid } from "uuid";
-import { STATUS } from "../types";
 
 interface ITaskInputProps {
   actionDispatcher: React.Dispatch<Action>;
@@ -18,7 +17,7 @@ const TaskInput: React.FunctionComponent<ITaskInputProps> = ({
       //task creation event here
       actionDispatcher({
         type: ACTIONS.ADD,
-        payload: { taskId: uid(), title: taskInput, status: STATUS.Active },
+        payload: { taskId: uid(), title: taskInput, status: "ACTIVE" },
       });
       //cleanup here
       setTaskInput("");

@@ -3,19 +3,34 @@ import styled from "styled-components";
 import { ReactComponent as NoTasks } from "../icons/notasks.svg";
 import Task from "./Task";
 import { Tasks } from "../types";
+import { Action, ACTIONS } from "../reducers/taskreducer";
 
 interface ITasksCollectionProps {
   tasks: Tasks;
+  actionDispatcher: React.Dispatch<Action>;
 }
 interface ContainerProps {
   length: number;
 }
 
-const TasksCollection: React.FC<ITasksCollectionProps> = ({ tasks }) => {
+const TasksCollection: React.FC<ITasksCollectionProps> = ({
+  tasks,
+  actionDispatcher,
+}) => {
+  const onStatusChanged = (id: string) => {
+    console.log(id);
+    actionDispatcher({ type: ACTIONS.CHANGE_STATUS, payload: { taskId: id } });
+  };
   return (
     <Container length={tasks.length}>
       {tasks.map((task) => (
-        <Task key={task.taskId} status={task.status} title={task.title} />
+        <Task
+          key={task.taskId}
+          status={task.status}
+          title={task.title}
+          id={task.taskId}
+          onStatusChangedCallback={onStatusChanged}
+        />
       ))}
       {tasks.length === 0 && (
         <EmptyStateContainer>

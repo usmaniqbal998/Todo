@@ -19,7 +19,7 @@ function App() {
       <Main>
         <ThemeSwitch mode={activeMode} switchThemeCallback={switchTheme} />
         <TaskInput actionDispatcher={dispatch} />
-        <TasksCollection tasks={tasks} />
+        <TasksCollection actionDispatcher={dispatch} tasks={tasks} />
       </Main>
       <TopBanner />
     </ThemeProvider>

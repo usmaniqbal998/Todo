@@ -1,5 +1,4 @@
-import { stat } from "fs";
-import * as React from "react";
+import React from "react";
 import styled from "styled-components";
 import { ReactComponent as Tick } from "../icons/tick.svg";
 import { STATUS } from "../types";
@@ -7,19 +6,26 @@ import { STATUS } from "../types";
 interface ITaskProps {
   status: STATUS;
   title: string;
+  id: string;
+  onStatusChangedCallback: (id: string) => void;
 }
 
 interface TaskStyleProps {
   complete: boolean;
 }
 
-const Task: React.FunctionComponent<ITaskProps> = ({ status, title }) => {
+const Task: React.FunctionComponent<ITaskProps> = ({
+  status,
+  title,
+  id,
+  onStatusChangedCallback,
+}) => {
   return (
-    <Container>
-      <Oval complete={status === STATUS.Completed}>
-        {status === STATUS.Completed && <Tick />}
+    <Container onClick={() => onStatusChangedCallback(id)}>
+      <Oval complete={status === "COMPLETED"}>
+        {status === "COMPLETED" && <Tick />}
       </Oval>
-      <TaskTitle complete={status === STATUS.Completed}>{title}</TaskTitle>
+      <TaskTitle complete={status === "COMPLETED"}>{title}</TaskTitle>
     </Container>
   );
 };
@@ -32,6 +38,10 @@ const Container = styled.div`
   height: 6.2rem;
   border-bottom: ${(props) => `1px solid ${props.theme.borderColor}`};
   padding: 2rem 2.4rem;
+
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const Oval = styled.div<TaskStyleProps>`
@@ -47,7 +57,7 @@ const Oval = styled.div<TaskStyleProps>`
   align-items: center;
   border: ${(props) =>
     !props.complete && `1px solid ${props.theme.borderColor}`};
-  transition: all 0.2s ease-in;
+  transition: background 0.2s ease-in;
 `;
 
 const TaskTitle = styled.p<TaskStyleProps>`
