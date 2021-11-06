@@ -3,11 +3,14 @@ import styled from "styled-components";
 import { ReactComponent as Tick } from "../icons/tick.svg";
 import { STATUS } from "../types";
 import { IoMdClose } from "react-icons/io";
+import { device } from "../styles/devices";
+
 interface ITaskProps {
   status: STATUS;
   title: string;
   id: string;
   onStatusChangedCallback: (id: string) => void;
+  onRemovedCallback: (id: string) => void;
 }
 
 interface TaskStyleProps {
@@ -19,6 +22,7 @@ const Task: React.FunctionComponent<ITaskProps> = ({
   title,
   id,
   onStatusChangedCallback,
+  onRemovedCallback,
 }) => {
   return (
     <Container onClick={() => onStatusChangedCallback(id)}>
@@ -26,6 +30,7 @@ const Task: React.FunctionComponent<ITaskProps> = ({
         {status === "COMPLETED" && <Tick />}
       </Oval>
       <TaskTitle complete={status === "COMPLETED"}>{title}</TaskTitle>
+      <CloseIcon onClick={() => onRemovedCallback(id)} />
     </Container>
   );
 };
@@ -38,9 +43,16 @@ const Container = styled.div`
   height: 6.2rem;
   border-bottom: ${(props) => `1px solid ${props.theme.borderColor}`};
   padding: 2rem 2.4rem;
-
   &:hover {
     cursor: pointer;
+  }
+
+  &:hover svg {
+    opacity: 1;
+  }
+
+  @media ${device.mobileL} {
+    height: 4.8rem;
   }
 `;
 
@@ -58,6 +70,17 @@ const Oval = styled.div<TaskStyleProps>`
   border: ${(props) =>
     !props.complete && `1px solid ${props.theme.borderColor}`};
   transition: background 0.2s ease-in;
+
+  @media ${device.mobileL} {
+    width: 2rem;
+    height: 2rem;
+  }
+`;
+
+const CloseIcon = styled(IoMdClose)`
+  color: ${(props) => props.theme.textColor};
+  opacity: 0;
+  transition: all 0.2s ease-in;
 `;
 
 const TaskTitle = styled.p<TaskStyleProps>`
@@ -73,6 +96,13 @@ const TaskTitle = styled.p<TaskStyleProps>`
     props.complete ? props.theme.completedText : props.theme.textColor};
   text-decoration: ${(props) => props.complete && "line-through"};
   transition: all 0.2s ease-in;
+
+  @media ${device.mobileL} {
+    font-size: 1.4rem;
+    line-height: 1.2rem;
+    letter-spacing: -0.166667px;
+    margin-left: 1.2rem;
+  }
 `;
 
 export default Task;

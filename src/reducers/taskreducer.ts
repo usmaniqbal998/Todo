@@ -4,6 +4,7 @@ export enum ACTIONS {
   ADD = "ADD",
   CHANGE_STATUS = "CHANGE_STATUS",
   CLEAR_COMPLETED = "CLEAR_COMPLETED",
+  REMOVE_TASK = "REMOVE_TASK",
 }
 
 export type Action = {
@@ -36,6 +37,10 @@ const TasksReducer = (state: Tasks, action: Action) => {
         }
         return taskCopy;
       });
+    }
+
+    case ACTIONS.REMOVE_TASK: {
+      return state.filter((task) => task.taskId !== payload.taskId);
     }
 
     default:

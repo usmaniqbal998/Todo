@@ -2,6 +2,7 @@ import * as React from "react";
 import styled from "styled-components";
 import { ReactComponent as Moon } from "../icons/moon.svg";
 import { ReactComponent as Sun } from "../icons/sun.svg";
+import { device } from "../styles/devices";
 
 interface IThemeSwitchProps {
   mode: string;
@@ -37,6 +38,11 @@ const AppTitle = styled.h1`
   line-height: 4rem;
   letter-spacing: 1.5rem;
   color: #ffffff;
+
+  @media ${device.mobileL} {
+    font-size: 2rem;
+    letter-spacing: 1rem;
+  }
 `;
 
 export default ThemeSwitch;

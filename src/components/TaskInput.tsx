@@ -2,6 +2,7 @@ import * as React from "react";
 import styled from "styled-components";
 import { Action, ACTIONS } from "../reducers/taskreducer";
 import { v4 as uid } from "uuid";
+import { device } from "../styles/devices";
 
 interface ITaskInputProps {
   actionDispatcher: React.Dispatch<Action>;
@@ -47,6 +48,13 @@ const Container = styled.div`
   transition: background-color 0.3s ease-in;
   margin-top: 4rem;
   padding: 2rem 2.4rem;
+
+  @media ${device.mobileL} {
+    margin-top: 1.8rem;
+    height: 4.8rem;
+    padding-top: 1.4rem;
+    padding-bottom: 1.4rem;
+  }
 `;
 
 const Oval = styled.div`
@@ -57,6 +65,11 @@ const Oval = styled.div`
   border: ${(props) =>
     props.theme.mode === "light" ? "1px solid #e3e4f1" : "1px solid #393A4B"};
   transition: all 0.3s ease-in;
+
+  @media ${device.mobileL} {
+    width: 2rem;
+    height: 2rem;
+  }
 `;
 
 const Input = styled.input`
@@ -78,6 +91,13 @@ const Input = styled.input`
   transition: background-color 0.3s ease-in;
   &::focus {
     outline: none;
+  }
+
+  @media ${device.mobileL} {
+    font-size: 1.4rem;
+    line-height: 1.2rem;
+    letter-spacing: -0.166667px;
+    margin-left: 1.2rem;
   }
 `;
 

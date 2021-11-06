@@ -4,6 +4,7 @@ import { ReactComponent as NoTasks } from "../icons/notasks.svg";
 import Task from "./Task";
 import { Tasks } from "../types";
 import { Action, ACTIONS } from "../reducers/taskreducer";
+import { device } from "../styles/devices";
 
 interface ITasksCollectionProps {
   tasks: Tasks;
@@ -21,13 +22,23 @@ const TasksCollection: React.FC<ITasksCollectionProps> = ({
   tasks,
   actionDispatcher,
 }) => {
-  const onStatusChanged = (id: string) => {
-    actionDispatcher({ type: ACTIONS.CHANGE_STATUS, payload: { taskId: id } });
-  };
   const [showTasksByStatus, setShowTasksByStatus] = React.useState("ALL");
-
   const activeTasks = tasks.filter((task) => task.status === "ACTIVE");
   const completedTasks = tasks.filter((task) => task.status === "COMPLETED");
+
+  const onStatusChanged = (id: string) => {
+    actionDispatcher({
+      type: ACTIONS.CHANGE_STATUS,
+      payload: { taskId: id },
+    });
+  };
+
+  const onTaskRemoved = (id: string) => {
+    actionDispatcher({
+      type: ACTIONS.REMOVE_TASK,
+      payload: { taskId: id },
+    });
+  };
 
   const getTasksToDisplay = () => {
     if (showTasksByStatus === "ACTIVE") return activeTasks;
@@ -36,69 +47,112 @@ const TasksCollection: React.FC<ITasksCollectionProps> = ({
   };
 
   return (
-    <Container>
-      <TasksContainer length={tasks.length}>
-        {getTasksToDisplay().map((task) => (
-          <Task
-            key={task.taskId}
-            status={task.status}
-            title={task.title}
-            id={task.taskId}
-            onStatusChangedCallback={onStatusChanged}
-          />
-        ))}
-        {tasks.length === 0 && (
-          <EmptyStateContainer>
-            <NoTasks />
-            <EmptyStateMessage>
-              You are all Caught up. No Tasks
-              <br /> for Today
-            </EmptyStateMessage>
-          </EmptyStateContainer>
-        )}
-      </TasksContainer>
-      <BottomBar>
-        <BottomCol>
-          <FlatBtn>{activeTasks.length} items left</FlatBtn>
-        </BottomCol>
+    <>
+      <Container>
+        <TasksContainer length={tasks.length}>
+          {getTasksToDisplay().map((task) => (
+            <Task
+              key={task.taskId}
+              status={task.status}
+              title={task.title}
+              id={task.taskId}
+              onStatusChangedCallback={onStatusChanged}
+              onRemovedCallback={onTaskRemoved}
+            />
+          ))}
+          {tasks.length === 0 && (
+            <EmptyStateContainer>
+              <NoTasks />
+              <EmptyStateMessage>
+                You are all Caught up. No Tasks
+                <br /> for Today
+              </EmptyStateMessage>
+            </EmptyStateContainer>
+          )}
+        </TasksContainer>
+        <BottomBar>
+          <BottomCol>
+            <FlatBtn>{activeTasks.length} items left</FlatBtn>
+          </BottomCol>
 
-        <BottomMidCol>
-          <FlatBtn
-            onClick={() => setShowTasksByStatus("ALL")}
-            active={showTasksByStatus === "ALL"}
-          >
-            All
-          </FlatBtn>
-          <FlatBtn
-            onClick={() => setShowTasksByStatus("ACTIVE")}
-            active={showTasksByStatus === "ACTIVE"}
-          >
-            Active
-          </FlatBtn>
-          <FlatBtn
-            onClick={() => setShowTasksByStatus("COMPLETED")}
-            active={showTasksByStatus === "COMPLETED"}
-          >
-            Completed
-          </FlatBtn>
-        </BottomMidCol>
+          <BottomMidCol>
+            <FlatBtn
+              onClick={() => setShowTasksByStatus("ALL")}
+              active={showTasksByStatus === "ALL"}
+            >
+              All
+            </FlatBtn>
+            <FlatBtn
+              onClick={() => setShowTasksByStatus("ACTIVE")}
+              active={showTasksByStatus === "ACTIVE"}
+            >
+              Active
+            </FlatBtn>
+            <FlatBtn
+              onClick={() => setShowTasksByStatus("COMPLETED")}
+              active={showTasksByStatus === "COMPLETED"}
+            >
+              Completed
+            </FlatBtn>
+          </BottomMidCol>
 
-        <BottomCol>
-          <FlatBtn
-            onClick={() =>
-              actionDispatcher({
-                type: ACTIONS.CLEAR_COMPLETED,
-                payload: {},
-              })
-            }
-          >
-            Clear Completed
-          </FlatBtn>
-        </BottomCol>
-      </BottomBar>
-    </Container>
+          <BottomCol>
+            <FlatBtn
+              onClick={() =>
+                actionDispatcher({
+                  type: ACTIONS.CLEAR_COMPLETED,
+                  payload: {},
+                })
+              }
+            >
+              Clear Completed
+            </FlatBtn>
+          </BottomCol>
+        </BottomBar>
+      </Container>
+      <MobileBottomBar>
+        <FlatBtn
+          onClick={() => setShowTasksByStatus("ALL")}
+          active={showTasksByStatus === "ALL"}
+        >
+          All
+        </FlatBtn>
+        <FlatBtn
+          onClick={() => setShowTasksByStatus("ACTIVE")}
+          active={showTasksByStatus === "ACTIVE"}
+        >
+          Active
+        </FlatBtn>
+        <FlatBtn
+          onClick={() => setShowTasksByStatus("COMPLETED")}
+          active={showTasksByStatus === "COMPLETED"}
+        >
+          Completed
+        </FlatBtn>
+      </MobileBottomBar>
+    </>
   );
 };
+
+const MobileBottomBar = styled.div`
+  width: 100%;
+  margin-top: 2.4rem;
+  height: 4.8rem;
+  background: ${(props) => props.theme.componentBackgroundColor};
+  box-shadow: ${(props) => props.theme.componentsBoxShadow};
+  border-radius: 5px;
+  overflow: hidden;
+  align-items: center;
+  justify-content: space-around;
+  padding: 0 3rem;
+  display: none;
+  & button {
+    font-weight: 600;
+  }
+  @media ${device.mobileL} {
+    display: flex;
+  }
+`;
 
 const Container = styled.div`
   background: ${(props) => props.theme.componentBackgroundColor};
@@ -110,11 +164,20 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  @media ${device.mobileL} {
+    height: flex;
+    height: 50rem;
+  }
+
+  @media ${device.mobileH} {
+    height: flex;
+    height: 34rem;
+  }
 `;
 
 const FlatBtn = styled.button<FlatBtnProps>`
   color: ${(props) => (props.active ? "#3A7CFD" : props.theme.flatBtnColor)};
-  font-size: 14px;
+  font-size: 1.4rem;
   background-color: transparent;
   outline: none;
   border: none;
@@ -123,6 +186,13 @@ const FlatBtn = styled.button<FlatBtnProps>`
   &:hover {
     cursor: pointer;
     color: ${(props) => props.theme.flatBtnHoverColor};
+  }
+
+  @media ${device.mobileL} {
+    &:hover {
+      color: ${(props) =>
+        props.active ? "#3A7CFD" : props.theme.flatBtnColor};
+    }
   }
 `;
 
@@ -142,6 +212,10 @@ const BottomMidCol = styled(BottomCol)`
   & button {
     font-weight: 600;
   }
+
+  @media ${device.mobileL} {
+    display: none;
+  }
 `;
 
 const TasksContainer = styled.div<TasksContainerProps>`
@@ -156,12 +230,20 @@ const TasksContainer = styled.div<TasksContainerProps>`
   &::-webkit-scrollbar {
     display: none;
   }
+
+  @media ${device.mobileL} {
+    height: calc(100% - 4.8rem);
+  }
 `;
 
 const BottomBar = styled.div`
   display: flex;
   height: 6.2rem;
   width: 100%;
+
+  @media ${device.mobileL} {
+    height: 4.8rem;
+  }
 `;
 
 const EmptyStateContainer = styled.div`
@@ -180,6 +262,9 @@ const EmptyStateMessage = styled.p`
   line-height: 2.2rem;
   letter-spacing: -0.194444px;
   color: ${(props) => props.theme.textColor};
+  @media ${device.mobileL} {
+    font-size: 1.4rem;
+  }
 `;
 
 export default TasksCollection;
