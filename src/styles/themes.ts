@@ -9,6 +9,8 @@ export const lightTheme: DefaultTheme = {
   componentsBoxShadow: "0rem 3.5rem 5rem -1.5rem rgba(194, 195, 214, 0.5)",
   borderColor: "#E3E4F1",
   completedText: "#D1D2DA",
+  flatBtnColor: "#9495A5",
+  flatBtnHoverColor: "#494C6B",
 };
 
 export const darkTheme: DefaultTheme = {
@@ -20,4 +22,6 @@ export const darkTheme: DefaultTheme = {
   componentsBoxShadow: "0px 3.5rem 5rem -1.5rem rgba(0, 0, 0, 0.5)",
   borderColor: "#393A4B",
   completedText: "#4D5067",
+  flatBtnColor: "#9495A5",
+  flatBtnHoverColor: "#E3E4F1",
 };

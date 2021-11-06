@@ -12,5 +12,7 @@ declare module "styled-components" {
     componentsBoxShadow: string;
     borderColor: string;
     completedText: string;
+    flatBtnColor: string;
+    flatBtnHoverColor: string;
   }
 }

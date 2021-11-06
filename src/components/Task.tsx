@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { ReactComponent as Tick } from "../icons/tick.svg";
 import { STATUS } from "../types";
-
+import { IoMdClose } from "react-icons/io";
 interface ITaskProps {
   status: STATUS;
   title: string;
